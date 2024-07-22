@@ -1,7 +1,7 @@
-const Heading = ()=>{
+const Heading = ({title})=>{
     return (
         <div className="heading">
-            <p className="heading-title">Heading</p>
+            <p className="heading-title">{title}</p>
         </div>
     );
 }

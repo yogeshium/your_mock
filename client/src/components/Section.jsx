@@ -1,20 +1,30 @@
 import Heading from "./Heading";
+import { useSelector } from "react-redux";
 
-const SectionInfo = () => {
+const SectionInfo = ({ idx }) => {
+  const section = useSelector((state) => state.mock.sections[idx]);
+  const statusClassName = [
+    "not-attempted",
+    "current",
+    "answered",
+    "not-answered",
+    "marked-review",
+  ];
+
   return (
     <div className="section-container">
-        <Heading />
+      <Heading title={section.title} />
       <div className="section-q-box-container">
-        <div class="section-q-box">1</div>
-        <div class="section-q-box">2</div>
-        <div class="section-q-box">3</div>
-        <div class="section-q-box">4</div>
-        <div class="section-q-box">5</div>
-        <div class="section-q-box">6</div>
-        <div class="section-q-box">7</div>
-        <div class="section-q-box">8</div>
-        <div class="section-q-box">9</div>
-        <div class="section-q-box">10</div>
+        {section.questions.map((q, i) => {
+          return (
+            <div
+              className={"section-q-box " + statusClassName[q.status]}
+              key={q.id}
+            >
+              {i + 1}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

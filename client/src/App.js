@@ -1,9 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ExamWindow from "./components/ExamWindow.jsx";
-import Dashboard from "./components/Dashboard.jsx";
-import ResultWindow from "./components/ResultWindow.jsx";
-import Exam from "./components/Exam.jsx";
-import Root from "./components/Root.jsx";
+import {Root, Dashboard, Exam , ExamWindow, ResultWindow} from "./pages";
 import "./App.css";
 function App() {
   return (
@@ -11,8 +7,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Root />}>
           <Route index element={<Dashboard />} />
-          <Route path="exam/:id" element={<ExamWindow />}/>
-          <Route path="result" element={<ResultWindow />} />
+          <Route path="exam">
+            <Route index element={<Exam />} />
+            <Route path=":id" element={<ExamWindow />}/>
+          </Route>
+          <Route path="result" element={<ResultWindow/>}>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

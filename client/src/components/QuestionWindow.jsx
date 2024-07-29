@@ -1,26 +1,51 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Heading from "./Heading";
 import { useSelector, useDispatch } from "react-redux";
-import { setOptionChosen } from "../store/mockData";
+import { setOptionChosen, setStatus } from "../store/mockData";
 
 const QAWindow = () => {
+  const dispatch = useDispatch();
   const mockData = useSelector((state) => state.mock);
   const curr = useSelector((state) => state.currentQuestion);
-  // console.log(curr);
-  const question = useSelector((state) => {
-    const sections = state.mock.sections;
-    if (sections) {
-      return sections[curr.sectionNumber - 1].questions[
-        curr.questionNumber - 1
-      ];
-    }
-  });
-
-  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(null);
+  
+  const question = mockData?.sections[curr?.sectionNumber-1].questions[curr.questionNumber-1];
+
+  const updateStatus = (status) => {
+    return {
+      ...mockData,
+
+      sections: [
+        ...mockData.sections.slice(0, curr.sectionNumber - 1),
+        {
+          ...mockData.sections[curr.sectionNumber - 1],
+          questions: [
+            ...mockData.sections[curr.sectionNumber - 1].questions.slice(
+              0,
+              curr.questionNumber - 1
+            ),
+            {
+              ...mockData.sections[curr.sectionNumber - 1].questions[
+                curr.questionNumber - 1
+              ],
+              status: status,
+            },
+            ...mockData.sections[curr.sectionNumber - 1].questions.slice(
+              curr.questionNumber
+            ),
+          ],
+        },
+        ...mockData.sections.slice(curr.sectionNumber),
+      ],
+    };
+  };
+
+  //Whenever going to new question - taking its optionChosen and showing.
+  //Also set Status to 'current'
   useEffect(() => {
-    setSelectedOption(question?.optionChosen)
-  }, [question?.optionChosen]);
+    dispatch(setStatus(updateStatus(1)));
+    setSelectedOption(question?.optionChosen);
+  }, [question?.optionChosen, curr]);
 
   const updateOptionSelected = (id) => {
     return {
@@ -51,9 +76,8 @@ const QAWindow = () => {
     };
   };
 
- 
-
-  const handleChange = (id) => {
+  //Set the option Chosen whenever user choose a option and set status to 'answered' (answered -> 2)
+  const handleChangeOption = (id) => {
     setSelectedOption(id);
     dispatch(setOptionChosen(updateOptionSelected(id)));
   };
@@ -77,7 +101,7 @@ const QAWindow = () => {
                   name="option"
                   checked={selectedOption === e.id}
                   value={e.content}
-                  onChange={() => handleChange(e.id)}
+                  onChange={() => handleChangeOption(e.id)}
                 />
                 <label htmlFor="option">
                   {(idx + 1)?.toString() + ". " + e.content}

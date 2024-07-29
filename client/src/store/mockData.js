@@ -18,5 +18,5 @@ const mockSlice = createSlice({
   },
 });
 
-export const { setMock, setOptionChosen} = mockSlice.actions;
+export const { setMock, setOptionChosen, setStatus} = mockSlice.actions;
 export default mockSlice.reducer;

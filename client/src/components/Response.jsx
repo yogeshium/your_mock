@@ -1,15 +1,25 @@
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../store/currentQuestion.js";
+import { setStatus } from "../store/mockData.js";
 import { useNavigate } from "react-router-dom";
+
+
 const Response = () => {
   const mockData = useSelector((state) => state.mock);
-  const sections = useSelector((state) => state.mock.sections);
-  // console.log(sections);
   const curr = useSelector((state) => state.currentQuestion);
+  const sections = mockData?.sections;
   const dispatch = useDispatch();
-  // console.log(curr);
   const navigate = useNavigate();
-  const updateStatus = (id) => {
+
+  /* When you click Next or Previous, you have to update status of current question.
+  It means, when user click Next or Previous, you will set the status of the current
+  question and then you will increment or decrement the current question accordingly.
+
+  Update the status according to the selected option. If the optionChosen=0, that 
+  means, user didn't chosen any option. You will mark it 3 ->(not-answered).
+  Else, you will mark it 2 ->(answered)
+  */
+  const updateStatus = () =>{
     return {
       ...mockData,
 
@@ -26,7 +36,8 @@ const Response = () => {
               ...mockData.sections[curr.sectionNumber - 1].questions[
                 curr.questionNumber - 1
               ],
-              status: id,
+              status: mockData.sections[curr.sectionNumber - 1].questions[
+                curr.questionNumber - 1].optionChosen===0?3:2,
             },
             ...mockData.sections[curr.sectionNumber - 1].questions.slice(
               curr.questionNumber
@@ -41,19 +52,22 @@ const Response = () => {
   const submitHandler = () => {
     navigate("/result");
   };
+
   const handleNext = () => {
     const totalSections = sections.length;
     const totalCurrSectionQuestions =
       sections[curr.sectionNumber - 1].questions.length;
-    // console.log(totalSections,totalQuesionInCurrentSection);
+    dispatch(setStatus(updateStatus()))
     dispatch(increment({ totalCurrSectionQuestions, totalSections }));
   };
+
   const handlePrev = () => {
     const totalSections = sections.length;
     const totalPrevSectionQuestions =
       curr.sectionNumber - 1 === 0
         ? sections[totalSections - 1].questions.length
         : sections[curr.sectionNumber - 1].questions.length;
+    dispatch(setStatus(updateStatus()))
     dispatch(decrement({ totalPrevSectionQuestions, totalSections }));
   };
 

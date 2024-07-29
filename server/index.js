@@ -3,10 +3,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
-//Models Import
-import Mock from "./src/models/Mock.js";
-
 //ROUTES IMPORT
+import mockRouter from "./src/routes/MockRoutes.js"
 
 //MIDDLEWARES import
 
@@ -15,7 +13,7 @@ const PORT = 8000;
 
 //Mongoose Connection
 mongoose
-  .connect("mongodb://127.0.0.1:27017/your_mock")
+  .connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/your_mock")
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("mongo error: ", err));
 
@@ -32,117 +30,21 @@ app.use(
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 
-const dummyData = {
-  id: "lksjdf",
-  title: "Exam1",
-  duration: 2 * 60 * 60,
-  sections: [
-    {
-      id: 1,
-      title: "Mathematics",
-      questions: [
-        {
-          id: 1,
-          content: "How are U?",
-          options: [
-            {
-              id: 1,
-              content: "I am fine",
-            },
-            {
-              id: 2,
-              content: "I am not fine",
-            },
-            {
-              id: 3,
-              content: "I am yogesh",
-            },
-          ],
-          optionChosen: 0,
-          status: 0,
-        },
-        {
-          id: 2,
-          content: "How U doin?",
-          options: [
-            {
-              id: 1,
-              content: "I am fine",
-            },
-            {
-              id: 2,
-              content: "I am not fine",
-            },
-            {
-              id: 3,
-              content: "I am yogesh",
-            },
-          ],
-          optionChosen: 0,
-          status: 0,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Physics",
-      questions: [
-        {
-          id: 1,
-          content: "How are U?",
-          options: [
-            {
-              id: 1,
-              content: "I am fine",
-            },
-            {
-              id: 2,
-              content: "I am not fine",
-            },
-            {
-              id: 3,
-              content: "I am yogesh",
-            },
-          ],
-          optionChosen: 0,
-          status: 0,
-        },
-        {
-          id: 2,
-          content: "How U doin?",
-          options: [
-            {
-              id: 1,
-              content: "I am fine",
-            },
-            {
-              id: 2,
-              content: "I am not fine",
-            },
-            {
-              id: 3,
-              content: "I am yogesh",
-            },
-          ],
-          optionChosen: 0,
-          status: 0,
-        },
-      ],
-    },
-  ],
-};
 
 
 //ROUTES//
-app.get("/exam/:id", (req, res) => {
-  return res.status(200).json(dummyData);
-});
+app.use("/mock",mockRouter);
 
-app.post("/result",(req,res)=>{
-  const userData=req.body;
-  
-  return res.status(200).json({success: true})
-})
+
+
+// app.get("/exam/:id", (req, res) => {
+//   return res.status(200).json(dummyData);
+// });
+
+// app.post("/result",(req,res)=>{
+//   const userData=req.body;
+//   return res.status(200).json({success: true})
+// })
 
 
 app.listen(PORT, () => console.log(`Listening to Port ${PORT}`));

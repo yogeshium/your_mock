@@ -1,5 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {Root, Dashboard, Exam , ExamWindow, ResultWindow} from "./pages";
+import {
+  Root,
+  Dashboard,
+  Exam,
+  ExamWindow,
+  ResultWindow,
+  CreatePage
+} from "./pages";
+
+import { MockProvider } from "./contexts/MockContext";
+
 import "./App.css";
 function App() {
   return (
@@ -9,10 +19,10 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="exam">
             <Route index element={<Exam />} />
-            <Route path=":id" element={<ExamWindow />}/>
+            <Route path=":id" element={<ExamWindow />} />
           </Route>
-          <Route path="result" element={<ResultWindow/>}>
-          </Route>
+          {/* <Route path="result" element={<ResultWindow />}></Route> */}
+          <Route path="create" element={<MockProvider><CreatePage /></MockProvider>} />
         </Route>
       </Routes>
     </BrowserRouter>

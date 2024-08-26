@@ -125,9 +125,12 @@ const dummyData = {
 };
 
 const insertMock = async (req, res) => {
+  let data = req.body;
+  console.log(data);
   try {
-    const result = await mockService.insertMock(dummyData);
+    const result = await mockService.insertMock(data);
     return res.status(200).json({ success: true, id: result._id });
+    // return res.status(200).json({ success: true});
   } catch (err) {
     console.log(err);
     return res.status(500).json({ success: false, message: err.message });

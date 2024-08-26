@@ -9,32 +9,34 @@ function CreatePage() {
   const handleAddSection = () => {
     dispatch({
       type: "Create New Section",
-    })
+    });
   };
 
-  const handleClickEdit = (idx)=>{
+  const handleClickEdit = (idx) => {
     dispatch({
       type: "Edit This Section",
-      sectionIndex: idx, 
-    })
-  }
+      sectionIndex: idx,
+    });
+  };
 
   return (
-    <div>
+    <>
       {/* Show All the sections, click them if, you want to edit */}
       {mock?.sections.map((section, idx) =>
         section.edit === true ? (
           <SectionInput key={idx} sectionIndex={idx} />
         ) : (
-          <div key={idx} 
-            onClick={()=>handleClickEdit(idx)}
-          >
+          <div key={idx} onClick={() => handleClickEdit(idx)}>
             {section.title}
           </div>
         )
       )}
-      <button onClick={handleAddSection}>+ Add Section</button>
-    </div>
+      <div>
+        <button className="btn btn-add" onClick={handleAddSection}>
+          + Add Section
+        </button>
+      </div>
+    </>
   );
 }
 

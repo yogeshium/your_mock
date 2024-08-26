@@ -54,20 +54,35 @@ const QuestionInput = ({ index }) => {
   };
 
   const handleHoursChange = (e) => {
-    setDuration({ ...duration, hours: e.target.value });
+    const value = e.target.value;
+    if (value === "" || (Number(value) >= 0 && Number(value) <= 23)) {
+      setDuration({ ...duration, hours: value });
+    }
   };
   const handleMinutesChange = (e) => {
-    setDuration({ ...duration, minutes: e.target.value });
+    const value = e.target.value;
+    if (value === "" || (Number(value) >= 0 && Number(value) <= 59)) {
+      setDuration({ ...duration, minutes: value });
+    }
+  };
+  const handleSecondsChange = (e) => {
+    const value = e.target.value;
+    if (value === "" || (Number(value) >= 0 && Number(value) <= 59)) {
+      setDuration({ ...duration, seconds: value });
+    }
   };
 
   return (
-    <div>
+    <div className="question-input-container">
       <div>
+        <label>Question:</label>
         <textarea
           name=""
           id=""
+          rows="7"
+          className="textarea-input"
           value={content}
-          placeholder="Question Title"
+          placeholder="Question Title - You can put Latex code here"
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
@@ -75,23 +90,36 @@ const QuestionInput = ({ index }) => {
         <label>Duration: </label>
         <input
           type="text"
+          className="duration-input"
           value={duration.hours}
           onChange={handleHoursChange}
-          placeholder="HH"
+          placeholder="Hours"
         />
         :
         <input
           type="text"
+          className="duration-input"
           value={duration.minutes}
           onChange={handleMinutesChange}
-          placeholder="MM"
+          placeholder="Minutes"
+        />
+        :
+        <input
+          type="text"
+          className="duration-input"
+          value={duration.seconds}
+          onChange={handleSecondsChange}
+          placeholder="Seconds"
         />
       </div>
       {options.map((option, index) =>
         option.edit === true ? (
-          <div key={index}>
-            <input
+          <div key={index} className="option-input-container">
+            <textarea
               type="text"
+              rows="3"
+              className="textarea-input"
+              placeholder={`Option ${index+1} - You can put Latex code here`}
               value={editingOption}
               onChange={(e) => setEditingOption(e.target.value)}
             />
@@ -108,7 +136,8 @@ const QuestionInput = ({ index }) => {
         <button onClick={handleAddOption}>+ Add Option</button>
       </div>
       <div>
-        <input type="text" placeholder="Answer" />
+        <label>Answer: </label>
+        <input type="text" placeholder="Option Number" />
       </div>
 
       <div>

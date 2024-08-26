@@ -58,10 +58,12 @@ const SectionInput = ({ sectionIndex }) => {
   }
 
   return (
-    <div style={{ border: "1px solid black" }}>
+    <div className="section-input-container">
       <div>
+        <label>Title: </label>
         <input
           type="text"
+          className="title-input"
           placeholder="Section Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -71,23 +73,26 @@ const SectionInput = ({ sectionIndex }) => {
         <label>Duration: </label>
         <input
           type="text"
+          className="duration-input"
           value={duration.hours}
           onChange={handleHoursChange}
-          placeholder="HH"
+          placeholder="Hours"
         />
         :
         <input
           type="text"
+          className="duration-input"
           value={duration.minutes}
           onChange={handleMinutesChange}
-          placeholder="MM"
+          placeholder="Minutes"
         />
         :
         <input
           type="text"
+          className="duration-input"
           value={duration.seconds}
           onChange={handleSecondsChange}
-          placeholder="SS"
+          placeholder="Seconds"
         />
       </div>
       {mock?.sections[sectionIndex].questions.map((question, idx) =>

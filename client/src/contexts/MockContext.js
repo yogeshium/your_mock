@@ -7,6 +7,12 @@ export function MockProvider({ children }) {
     title: "",
     duration: { hours: "", minutes: "", seconds: "" },
     sections: [],
+    authorized: {
+      accessType: "public",
+      emails: "",
+    },
+    author: "",
+    instructions: "",
   });
 
   return (
@@ -28,7 +34,41 @@ export function useMockDispatch() {
 
 function mockReducer(mock, action) {
   switch (action.type) {
+    case "Change In Title": {
+      // console.log("triggered");
+      return {
+        ...mock,
+        title: action.title,
+      };
+    }
+    case "Change In Duration": {
+      // console.log("triggered");
+      return {
+        ...mock,
+        duration: action.duration,
+      };
+    }
+    case "Change In Instructions": {
+      // console.log("triggered");
+      return {
+        ...mock,
+        instructions: action.instructions,
+      };
+    }
+
+    case "Change In Authorized": {
+      // console.log("triggered");
+      return {
+        ...mock,
+        authorized: {
+          emails: action.emails,
+          accessType: action.accessType,
+        },
+      };
+    }
+
     case "Create New Section": {
+      // console.log(mock);
       return {
         ...mock,
         sections: [
@@ -118,5 +158,6 @@ function mockReducer(mock, action) {
         ),
       };
     }
+
   }
 }

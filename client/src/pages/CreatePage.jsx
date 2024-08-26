@@ -1,78 +1,67 @@
 import { useState } from "react";
-import { CreateSections } from "../components";
+import {
+  CreateSections,
+  WhoCanAccess,
+  TitleInput,
+  DurationInput,
+  InstructionInput,
+} from "../components";
+import validate from "../utils/validation.js";
+import manipulate from "../utils/manipulation.js";
 import { useMock } from "../contexts/MockContext";
+
 function CreatePage() {
+  const [errorMsg, setErrorMsg] = useState("");
   const mock = useMock();
-  const [title, setTitle] = useState(mock?.title);
-  const [duration, setDuration] = useState({
-    hours: mock?.duration.hours,
-    minutes: mock?.duration.minutes,
-    seconds: mock?.duration.seconds,
-  });
 
-  const handleHoursChange = (e) => {
-    const value = e.target.value;
-    if (value === "" || (Number(value) >= 0 && Number(value) <= 23)) {
-      setDuration({ ...duration, hours: value });
-    }
-  };
+  const handleSubmit = () => {
+    //call validate
+    validate(mock)
+      .then(async (result) => {
+        let newMock = manipulate(result);
+        try {
+          const response = await fetch(
+            "http://localhost:8000/mock/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newMock),
+            }
+          );
 
-  const handleMinutesChange = (e) => {
-    const value = e.target.value;
-    if (value === "" || (Number(value) >= 0 && Number(value) <= 59)) {
-      setDuration({ ...duration, minutes: value });
-    }
-  };
-  const handleSecondsChange = (e) => {
-    const value = e.target.value;
-    if (value === "" || (Number(value) >= 0 && Number(value) <= 59)) {
-      setDuration({ ...duration, seconds: value });
-    }
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const result = await response.json();
+          console.log("Success:", result);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      })
+      .catch((error) => setErrorMsg(error));
+
+    //call manipulate data
+    //call axios.post for pushing data to backend
   };
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={title}
-          placeholder="Mock Title"
-          required
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-      </div>
-      <div>
-        <label>Duration: </label>
-        <input
-          type="text"
-          value={duration.hours}
-          onChange={handleHoursChange}
-          placeholder="HH"
-        />
-        :
-        <input
-          type="text"
-          value={duration.minutes}
-          onChange={handleMinutesChange}
-          placeholder="MM"
-        />
-        :
-        <input
-          type="text"
-          value={duration.seconds}
-          onChange={handleSecondsChange}
-          placeholder="SS"
-        />
-      </div>
+    <div className="mock-container">
+      <TitleInput mockTitle={mock.title} />
+      <DurationInput mockDuration={mock.duration} />
       <CreateSections />
-
+      <WhoCanAccess authorized={mock?.authorized} />
+      <InstructionInput mockInstructions={mock.instructions} />
       <div>
-        <button>Save Mock</button>
-      </div>
-      <div>
-        <button>Submit</button>
+        {/* <button className="btn btn-save" onClick={handleSaveMock}>
+          Save Mock
+        </button> */}
+        {errorMsg !== "" && <p className="error">Error: {errorMsg}</p>}
+        <button className="btn btn-submit" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
     </div>
   );

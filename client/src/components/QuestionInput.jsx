@@ -13,6 +13,8 @@ const QuestionInput = ({ index }) => {
   const [options, setOptions] = useState(
     mock?.sections[index.sectionIndex].questions[index.questionIndex].options
   );
+  const [answer,setAnswer] = useState(mock?.sections[index.sectionIndex].questions[index.questionIndex].answer);
+
   const [editingOption, setEditingOption] = useState(null);
 
   const handleAddOption = () => {
@@ -49,6 +51,7 @@ const QuestionInput = ({ index }) => {
         duration: duration,
         options: options,
         edit: false,
+        answer: answer,
       },
     });
   };
@@ -137,7 +140,7 @@ const QuestionInput = ({ index }) => {
       </div>
       <div>
         <label>Answer: </label>
-        <input type="text" placeholder="Option Number" />
+        <input type="text" placeholder="Option Number" onChange={(e)=>setAnswer(e.target.value)} value={answer}/>
       </div>
 
       <div>

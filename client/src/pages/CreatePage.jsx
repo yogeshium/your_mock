@@ -36,7 +36,7 @@ function CreatePage() {
           }
 
           const result = await response.json();
-          console.log("Success:", result);
+          console.log(result);
         } catch (error) {
           console.error("Error:", error);
         }

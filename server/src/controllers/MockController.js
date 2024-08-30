@@ -2,8 +2,8 @@
 import * as mockService from "../services/MockService.js";
 
 const getMockById = async (req, res) => {
-
   try {
+   
     const result = await mockService.getMockById(req.params.id);
 
     /* Adding status and optionChosen in every question */
@@ -126,7 +126,7 @@ const dummyData = {
 
 const insertMock = async (req, res) => {
   let data = req.body;
-  console.log(data);
+  // console.log(data);
   try {
     const result = await mockService.insertMock(data);
     return res.status(200).json({ success: true, id: result._id });

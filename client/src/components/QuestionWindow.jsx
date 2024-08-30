@@ -8,7 +8,6 @@ const QAWindow = () => {
   const mockData = useSelector((state) => state.mock);
   const curr = useSelector((state) => state.currentQuestion);
   const [selectedOption, setSelectedOption] = useState(null);
-  
   const question = mockData?.sections[curr?.sectionNumber-1].questions[curr.questionNumber-1];
 
   const updateStatus = (status) => {

@@ -7,7 +7,7 @@ export default function manipulate(mock) {
       Number(mock.duration.seconds),
     sections: mock.sections.map((section, index) => {
       return {
-        id: index,
+        id: index+1,
         duration:
           Number(section.duration.hours) * 60 * 60 +
           Number(section.duration.minutes) * 60 +
@@ -15,7 +15,7 @@ export default function manipulate(mock) {
         title: section.title,
         questions: section.questions.map((question, qindex)=>{
             return {
-                id: qindex,
+                id: qindex+1,
                 duration: Number(question.duration.hours) * 60 * 60 +
                 Number(question.duration.minutes) * 60 +
                 Number(question.duration.seconds),
@@ -25,7 +25,7 @@ export default function manipulate(mock) {
                 status: 0,
                 options: question.options.map((option,oindex)=>{
                     return {
-                        id: oindex,
+                        id: oindex+1,
                         content: option.title,
                     }
                 })

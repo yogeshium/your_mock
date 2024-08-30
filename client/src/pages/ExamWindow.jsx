@@ -22,11 +22,12 @@ const ExamWindow = () => {
 
   //Fetching the data
   const { data, isPending, error } = useFetch(
-    `http://localhost:8000/exam/${id}`
+    `http://localhost:8000/mock/${id}`
   );
 
   //setMock as data arrives
   useEffect(() => {
+    console.log(data);
     dispatch(setMock(data));
   }, [data]);
 

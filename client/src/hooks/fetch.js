@@ -37,7 +37,7 @@ const useFetch = (url, userData = null) => {
           const response = await fetch(url);
           const json = await response.json();
           setIsPending(false);
-          setData(json);
+          setData(json.data);
           setError(null);
         } catch (err) {
           setError(`${error} Could Not Fetch Data`);

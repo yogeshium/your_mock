@@ -1,3 +1,4 @@
+import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Root,
@@ -5,13 +6,17 @@ import {
   Exam,
   ExamWindow,
   ResultWindow,
-  CreatePage
+  CreatePage,
+  Signup,
+  Login,
 } from "./pages";
 
+import { Navigate } from "react-router-dom";
 import { MockProvider } from "./contexts/MockContext";
+import { useAuth } from "./contexts/Auth";
 
-import "./App.css";
 function App() {
+  const {isLoggedIn} = useAuth();
   return (
     <BrowserRouter>
       <Routes>
@@ -22,7 +27,16 @@ function App() {
             <Route path=":id" element={<ExamWindow />} />
           </Route>
           {/* <Route path="result" element={<ResultWindow />}></Route> */}
-          <Route path="create" element={<MockProvider><CreatePage /></MockProvider>} />
+          <Route
+            path="create"
+            element={
+              <MockProvider>
+                <CreatePage />
+              </MockProvider>
+            }
+          />
+          <Route path="login" element={isLoggedIn ? <Navigate replace to="/" /> : <Login />} />
+          <Route path="signup" element={isLoggedIn ? <Navigate replace to="/" /> : <Signup />} />
         </Route>
       </Routes>
     </BrowserRouter>

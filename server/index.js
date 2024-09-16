@@ -4,7 +4,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
 //ROUTES IMPORT
-import mockRouter from "./src/routes/MockRoutes.js"
+import mockRouter from "./src/routes/MockRoutes.js";
+import userRouter from "./src/routes/UserRouter.js";
 
 //MIDDLEWARES import
 
@@ -30,12 +31,9 @@ app.use(
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 
-
-
 //ROUTES//
-app.use("/mock",mockRouter);
-
-
+app.use("/mock", mockRouter);
+app.use("/user", userRouter);
 
 // app.get("/exam/:id", (req, res) => {
 //   return res.status(200).json(dummyData);
@@ -45,6 +43,5 @@ app.use("/mock",mockRouter);
 //   const userData=req.body;
 //   return res.status(200).json({success: true})
 // })
-
 
 app.listen(PORT, () => console.log(`Listening to Port ${PORT}`));
